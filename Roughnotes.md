@@ -28,31 +28,75 @@ This is the full target platform — every layer we'll eventually build.
 
 ```mermaid
 flowchart TD
-    U["👥 Users & Systems<br/>Web · Mobile · APIs · Third-party"]
-    I["🚪 Ingress Layer<br/>API Gateway · Load Balancer · WAF · Rate Limiting · AuthN/AuthZ"]
-    O["🧭 Agent Orchestration<br/>Router · Intent Classifier · Planner · Task Decomposer · Context Manager"]
-    P["🔐 Policy & Governance<br/>Policy Engine · Compliance Rules · Data Classification · Enforcement Points"]
-    R["📇 Agent Registry & Directory<br/>Catalog · Capabilities · Versioning · Health · Cost/Usage"]
-    M["🤝 Multi-Agent Ecosystem<br/>Synchronous Agents · Asynchronous Agents · Shared Runtime"]
-    L["🧠 LLM & Model Layer<br/>Enterprise/Commercial LLMs · Model Gateway · Embeddings · Rerankers"]
-    T["🛠️ Tools & Integrations<br/>RAG/Vector DB · Search · Databases · APIs · MCP/Tool Servers"]
-    D["💾 Memory & Data Layer<br/>Short-term · Long-term · Vector Store · Cache"]
-    E["📨 Event & Message Bus<br/>Kafka/Pulsar · Topics · Dead-letter Queue · Retry · Schemas"]
-    A["📜 Audit & Compliance Store<br/>Audit Logs · Access Logs · Policy Decisions · Immutable/WORM"]
-    OB["📊 Observability & Monitoring<br/>Metrics · Logs · Traces · Dashboards · Alerts"]
-    EF["⚙️ Agent Efficiency & Optimization<br/>Reuse/Pooling · Dynamic Scaling · Cost-aware Routing · Context Compression"]
+    subgraph EDGE["🚪 Edge"]
+        U["👥 Users & Systems"]
+        I["🚪 Ingress Layer"]
+    end
+    subgraph CONTROL["🧭 Control Plane"]
+        O["🧭 Agent Orchestration"]
+        P["🔐 Policy & Governance"]
+        R["📇 Agent Registry"]
+    end
+    subgraph RUNTIME["🤝 Runtime"]
+        M["🤝 Multi-Agent Ecosystem"]
+        L["🧠 LLM & Model Layer"]
+        T["🛠️ Tools & Integrations"]
+    end
+    subgraph DATA["💾 Data Plane"]
+        D["💾 Memory & Data Layer"]
+        E["📨 Event & Message Bus"]
+    end
+    subgraph GOV["📜 Governance & Ops"]
+        A["📜 Audit & Compliance Store"]
+        OB["📊 Observability & Monitoring"]
+        EF["⚙️ Efficiency & Optimization"]
+    end
 
     U --> I --> O --> P --> R --> M --> L --> T --> D --> E --> A --> OB --> EF
 
-    S["🛡️ Security & Data Protection<br/>Classification · PII/PHI Detection · Masking · Secrets Vault · Encryption · DLP"]
-    X["🔁 Cross-Cutting Concerns<br/>Zero Trust · IAM · Backup/DR · HA/Scalability · Cost Optimization"]
+    S["🛡️ Security & Data Protection"]
+    X["🔁 Cross-Cutting Concerns"]
 
     P -.-> S
     D -.-> S
     O -.-> X
     L -.-> X
     E -.-> X
+
+    classDef edge fill:#e0f2fe,stroke:#0369a1,color:#0c4a6e
+    classDef control fill:#ede9fe,stroke:#6d28d9,color:#4c1d95
+    classDef runtime fill:#dcfce7,stroke:#15803d,color:#14532d
+    classDef data fill:#fef9c3,stroke:#a16207,color:#713f12
+    classDef gov fill:#fee2e2,stroke:#b91c1c,color:#7f1d1d
+    classDef cross fill:#f3f4f6,stroke:#374151,color:#111827,stroke-width:2px,stroke-dasharray: 4 3
+
+    class U,I edge
+    class O,P,R control
+    class M,L,T runtime
+    class D,E data
+    class A,OB,EF gov
+    class S,X cross
 ```
+
+**Layer details:**
+
+| Layer | Contains |
+|---|---|
+| 👥 Users & Systems | Web · Mobile · APIs · Third-party |
+| 🚪 Ingress Layer | API Gateway · Load Balancer · WAF · Rate Limiting · AuthN/AuthZ |
+| 🧭 Agent Orchestration | Router · Intent Classifier · Planner · Task Decomposer · Context Manager |
+| 🔐 Policy & Governance | Policy Engine · Compliance Rules · Data Classification · Enforcement Points |
+| 📇 Agent Registry & Directory | Catalog · Capabilities · Versioning · Health · Cost/Usage |
+| 🤝 Multi-Agent Ecosystem | Synchronous Agents · Asynchronous Agents · Shared Runtime |
+| 🧠 LLM & Model Layer | Enterprise/Commercial LLMs · Model Gateway · Embeddings · Rerankers |
+| 🛠️ Tools & Integrations | RAG/Vector DB · Search · Databases · APIs · MCP/Tool Servers |
+| 💾 Memory & Data Layer | Short-term · Long-term · Vector Store · Cache |
+| 📨 Event & Message Bus | Kafka/Pulsar · Topics · Dead-letter Queue · Retry · Schemas |
+| 📜 Audit & Compliance Store | Audit Logs · Access Logs · Policy Decisions · Immutable/WORM |
+| 📊 Observability & Monitoring | Metrics · Logs · Traces · Dashboards · Alerts |
+| ⚙️ Agent Efficiency & Optimization | Reuse/Pooling · Dynamic Scaling · Cost-aware Routing · Context Compression |
+| 🛡️ Security & Data Protection *(cross-cutting)* | Classification · PII/PHI Detection · Masking · Secrets Vault · Encryption · DLP |
+| 🔁 Cross-Cutting Concerns | Zero Trust · IAM · Backup/DR · HA/Scalability · Cost Optimization |
 
 ---
 
@@ -62,18 +106,27 @@ Policy is **not** an optional folder the agent consults — it sits directly bet
 
 ```mermaid
 flowchart TD
-    A1["🤖 Agent wants to call the LLM"] --> PE1{"🔐 Policy Engine"}
-    PE1 --> Q1["Is this agent allowed?"]
-    Q1 --> Q2["Can this data leave the organisation?"]
-    Q2 --> Q3["Does it contain secrets/PII?"]
-    Q3 --> Q4["Is this model approved?"]
-    Q4 --> Q5["Is this tool permitted?"]
-    Q5 -->|✅ Pass| LLM["🧠 LLM"]
-    Q5 -->|❌ Fail| Block1["🚫 Block / Escalate"]
+    subgraph LLM_CALL["🧠 LLM Call Path"]
+        A1["🤖 Agent → LLM"] --> PE1{"🔐 Policy Engine"}
+        PE1 --> Q1{"Agent allowed?"}
+        Q1 --> Q2{"Data can leave org?"}
+        Q2 --> Q3{"Secrets/PII present?"}
+        Q3 --> Q4{"Model approved?"}
+        Q4 --> Q5{"Tool permitted?"}
+        Q5 -->|✅ Pass| LLM["🧠 LLM"]
+        Q5 -->|❌ Fail| Block1["🚫 Block / Escalate"]
+    end
 
-    A2["🤖 Agent wants to execute an API/tool"] --> PE2{"🔐 Policy Engine"}
-    PE2 -->|✅ Allowed| Tool["🛠️ Tool"] --> Sys["🏢 Enterprise System"]
-    PE2 -->|❌ Denied| Block2["🚫 Block / Escalate"]
+    subgraph TOOL_CALL["🛠️ Tool Call Path"]
+        A2["🤖 Agent → Tool / API"] --> PE2{"🔐 Policy Engine"}
+        PE2 -->|✅ Allowed| Tool["🛠️ Tool"] --> Sys["🏢 Enterprise System"]
+        PE2 -->|❌ Denied| Block2["🚫 Block / Escalate"]
+    end
+
+    classDef pass fill:#dcfce7,stroke:#15803d,color:#14532d
+    classDef fail fill:#fee2e2,stroke:#b91c1c,color:#7f1d1d
+    class LLM,Tool,Sys pass
+    class Block1,Block2 fail
 ```
 
 ---
@@ -92,6 +145,11 @@ flowchart TD
     AgentB --> Result
     Sync --> Result
     Result --> Orch
+
+    classDef sync fill:#dbeafe,stroke:#1d4ed8,color:#1e3a8a
+    classDef async fill:#fef3c7,stroke:#b45309,color:#78350f
+    class Sync sync
+    class Async,Queue,AgentA,AgentB async
 ```
 
 This lets us learn *when* synchronous execution is appropriate vs. *when* asynchronous is better, instead of calling everything "an agent."
@@ -134,7 +192,18 @@ We build incrementally — never the full architecture on day one.
 
 ```mermaid
 flowchart LR
-    P1["🌱 1·Agent"] --> P2["🔧 2·LLM+Tool"] --> P3["🔐 3·Policy"] --> P4["🤝 4·Multi-Agent"] --> P5["🧭 5·Orchestrator"] --> P6["⚡ 6·Sync/Async"] --> P7["💾 7·Memory/RAG"] --> P8["🛡️ 8·Security"] --> P9["📊 9·Observability"] --> P10["🏛️ 10·Enterprise"]
+    subgraph PHASE1["Foundations"]
+        P1["🌱 1 · Agent"] --> P2["🔧 2 · LLM+Tool"] --> P3["🔐 3 · Policy"] --> P4["🤝 4 · Multi-Agent"] --> P5["🧭 5 · Orchestrator"]
+    end
+    subgraph PHASE2["Scale & Harden"]
+        P6["⚡ 6 · Sync/Async"] --> P7["💾 7 · Memory/RAG"] --> P8["🛡️ 8 · Security"] --> P9["📊 9 · Observability"] --> P10["🏛️ 10 · Enterprise"]
+    end
+    P5 --> P6
+
+    classDef phase1 fill:#e0f2fe,stroke:#0369a1,color:#0c4a6e
+    classDef phase2 fill:#ede9fe,stroke:#6d28d9,color:#4c1d95
+    class P1,P2,P3,P4,P5 phase1
+    class P6,P7,P8,P9,P10 phase2
 ```
 
 ---
@@ -177,6 +246,11 @@ flowchart LR
         U2["👤 User"] --> O2["🧭 Orchestrator"] --> P2["🔐 Policy"] --> Ag2["🤖 Agent"] --> LLM2["🧠 LLM"] --> R2["💬 Response"]
     end
     V1 -. evolves into .-> V2
+
+    classDef v1 fill:#f3f4f6,stroke:#6b7280,color:#111827
+    classDef v2 fill:#dcfce7,stroke:#15803d,color:#14532d
+    class U1,M1,LLM1,R1 v1
+    class U2,O2,P2,Ag2,LLM2,R2 v2
 ```
 
 ---
