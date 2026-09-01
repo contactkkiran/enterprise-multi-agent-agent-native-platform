@@ -28,75 +28,31 @@ This is the full target platform — every layer we'll eventually build.
 
 ```mermaid
 flowchart TD
-    subgraph EDGE["🚪 Edge"]
-        U["👥 Users & Systems"]
-        I["🚪 Ingress Layer"]
-    end
-    subgraph CONTROL["🧭 Control Plane"]
-        O["🧭 Agent Orchestration"]
-        P["🔐 Policy & Governance"]
-        R["📇 Agent Registry"]
-    end
-    subgraph RUNTIME["🤝 Runtime"]
-        M["🤝 Multi-Agent Ecosystem"]
-        L["🧠 LLM & Model Layer"]
-        T["🛠️ Tools & Integrations"]
-    end
-    subgraph DATA["💾 Data Plane"]
-        D["💾 Memory & Data Layer"]
-        E["📨 Event & Message Bus"]
-    end
-    subgraph GOV["📜 Governance & Ops"]
-        A["📜 Audit & Compliance Store"]
-        OB["📊 Observability & Monitoring"]
-        EF["⚙️ Efficiency & Optimization"]
-    end
+    U["👥 Users & Systems<br/>Web · Mobile · APIs · Third-party"]
+    I["🚪 Ingress Layer<br/>API Gateway · Load Balancer · WAF · Rate Limiting · AuthN/AuthZ"]
+    O["🧭 Agent Orchestration<br/>Router · Intent Classifier · Planner · Task Decomposer · Context Manager"]
+    P["🔐 Policy & Governance<br/>Policy Engine · Compliance Rules · Data Classification · Enforcement Points"]
+    R["📇 Agent Registry & Directory<br/>Catalog · Capabilities · Versioning · Health · Cost/Usage"]
+    M["🤝 Multi-Agent Ecosystem<br/>Synchronous Agents · Asynchronous Agents · Shared Runtime"]
+    L["🧠 LLM & Model Layer<br/>Enterprise/Commercial LLMs · Model Gateway · Embeddings · Rerankers"]
+    T["🛠️ Tools & Integrations<br/>RAG/Vector DB · Search · Databases · APIs · MCP/Tool Servers"]
+    D["💾 Memory & Data Layer<br/>Short-term · Long-term · Vector Store · Cache"]
+    E["📨 Event & Message Bus<br/>Kafka/Pulsar · Topics · Dead-letter Queue · Retry · Schemas"]
+    A["📜 Audit & Compliance Store<br/>Audit Logs · Access Logs · Policy Decisions · Immutable/WORM"]
+    OB["📊 Observability & Monitoring<br/>Metrics · Logs · Traces · Dashboards · Alerts"]
+    EF["⚙️ Agent Efficiency & Optimization<br/>Reuse/Pooling · Dynamic Scaling · Cost-aware Routing · Context Compression"]
 
     U --> I --> O --> P --> R --> M --> L --> T --> D --> E --> A --> OB --> EF
 
-    S["🛡️ Security & Data Protection"]
-    X["🔁 Cross-Cutting Concerns"]
+    S["🛡️ Security & Data Protection<br/>Classification · PII/PHI Detection · Masking · Secrets Vault · Encryption · DLP"]
+    X["🔁 Cross-Cutting Concerns<br/>Zero Trust · IAM · Backup/DR · HA/Scalability · Cost Optimization"]
 
     P -.-> S
     D -.-> S
     O -.-> X
     L -.-> X
     E -.-> X
-
-    classDef edge fill:#e0f2fe,stroke:#0369a1,color:#0c4a6e
-    classDef control fill:#ede9fe,stroke:#6d28d9,color:#4c1d95
-    classDef runtime fill:#dcfce7,stroke:#15803d,color:#14532d
-    classDef data fill:#fef9c3,stroke:#a16207,color:#713f12
-    classDef gov fill:#fee2e2,stroke:#b91c1c,color:#7f1d1d
-    classDef cross fill:#f3f4f6,stroke:#374151,color:#111827,stroke-width:2px,stroke-dasharray: 4 3
-
-    class U,I edge
-    class O,P,R control
-    class M,L,T runtime
-    class D,E data
-    class A,OB,EF gov
-    class S,X cross
 ```
-
-**Layer details:**
-
-| Layer | Contains |
-|---|---|
-| 👥 Users & Systems | Web · Mobile · APIs · Third-party |
-| 🚪 Ingress Layer | API Gateway · Load Balancer · WAF · Rate Limiting · AuthN/AuthZ |
-| 🧭 Agent Orchestration | Router · Intent Classifier · Planner · Task Decomposer · Context Manager |
-| 🔐 Policy & Governance | Policy Engine · Compliance Rules · Data Classification · Enforcement Points |
-| 📇 Agent Registry & Directory | Catalog · Capabilities · Versioning · Health · Cost/Usage |
-| 🤝 Multi-Agent Ecosystem | Synchronous Agents · Asynchronous Agents · Shared Runtime |
-| 🧠 LLM & Model Layer | Enterprise/Commercial LLMs · Model Gateway · Embeddings · Rerankers |
-| 🛠️ Tools & Integrations | RAG/Vector DB · Search · Databases · APIs · MCP/Tool Servers |
-| 💾 Memory & Data Layer | Short-term · Long-term · Vector Store · Cache |
-| 📨 Event & Message Bus | Kafka/Pulsar · Topics · Dead-letter Queue · Retry · Schemas |
-| 📜 Audit & Compliance Store | Audit Logs · Access Logs · Policy Decisions · Immutable/WORM |
-| 📊 Observability & Monitoring | Metrics · Logs · Traces · Dashboards · Alerts |
-| ⚙️ Agent Efficiency & Optimization | Reuse/Pooling · Dynamic Scaling · Cost-aware Routing · Context Compression |
-| 🛡️ Security & Data Protection *(cross-cutting)* | Classification · PII/PHI Detection · Masking · Secrets Vault · Encryption · DLP |
-| 🔁 Cross-Cutting Concerns | Zero Trust · IAM · Backup/DR · HA/Scalability · Cost Optimization |
 
 ---
 
@@ -105,7 +61,7 @@ flowchart TD
 Policy is **not** an optional folder the agent consults — it sits directly between agent intent and any sensitive action (LLM call or tool call).
 
 ```mermaid
-flowchart TD
+flowchart LR
     subgraph LLM_CALL["🧠 LLM Call Path"]
         direction TB
         A1["🤖 Agent → LLM"] --> PE1{"🔐 Policy Engine"}
