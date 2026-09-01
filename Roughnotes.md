@@ -1,19 +1,8 @@
-</b>
-
-----------------------------------------------------------------------
-
-</b>
-
-</b>
-
-
-
-
-
 # 🏢 Enterprise Multi-Agent Platform (Native AI) — Learning Notes
 
 ## 🎯 Project Overview
 
+```text
                                         ENTERPRISE MULTI-AGENT AI PLATFORM
 ┌─────────────────────────────────────────────────────────────────────┐
 │                         USER / SYSTEMS                               │
@@ -89,6 +78,7 @@
   Observability • Logging • Tracing • Metrics
   Audit • Cost Management • Rate Limiting
   Evaluation • Quality • Compliance • Governance
+```
 
 We're building a **mature enterprise multi-agent AI platform** — not a demo or a simple chatbot. The target architecture (below) is our master blueprint, and we build toward it progressively.
 
