@@ -159,9 +159,11 @@ We build incrementally — never the full architecture on day one.
 ```mermaid
 flowchart LR
     subgraph PHASE1["Foundations"]
+        direction TB
         P1["🌱 1 · Agent"] --> P2["🔧 2 · LLM+Tool"] --> P3["🔐 3 · Policy"] --> P4["🤝 4 · Multi-Agent"] --> P5["🧭 5 · Orchestrator"]
     end
     subgraph PHASE2["Scale & Harden"]
+        direction TB
         P6["⚡ 6 · Sync/Async"] --> P7["💾 7 · Memory/RAG"] --> P8["🛡️ 8 · Security"] --> P9["📊 9 · Observability"] --> P10["🏛️ 10 · Enterprise"]
     end
     P5 --> P6
