@@ -107,6 +107,7 @@ Policy is **not** an optional folder the agent consults — it sits directly bet
 ```mermaid
 flowchart TD
     subgraph LLM_CALL["🧠 LLM Call Path"]
+        direction TB
         A1["🤖 Agent → LLM"] --> PE1{"🔐 Policy Engine"}
         PE1 --> Q1{"Agent allowed?"}
         Q1 --> Q2{"Data can leave org?"}
@@ -117,7 +118,10 @@ flowchart TD
         Q5 -->|❌ Fail| Block1["🚫 Block / Escalate"]
     end
 
+    LLM_CALL ~~~ TOOL_CALL
+
     subgraph TOOL_CALL["🛠️ Tool Call Path"]
+        direction TB
         A2["🤖 Agent → Tool / API"] --> PE2{"🔐 Policy Engine"}
         PE2 -->|✅ Allowed| Tool["🛠️ Tool"] --> Sys["🏢 Enterprise System"]
         PE2 -->|❌ Denied| Block2["🚫 Block / Escalate"]
