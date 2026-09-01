@@ -14,6 +14,82 @@
 
 ## 🎯 Project Overview
 
+                                        ENTERPRISE MULTI-AGENT AI PLATFORM
+┌─────────────────────────────────────────────────────────────────────┐
+│                         USER / SYSTEMS                               │
+└──────────────────────────────┬──────────────────────────────────────┘
+                               ↓
+┌─────────────────────────────────────────────────────────────────────┐
+│  EXPERIENCE / API LAYER                                             │
+│  API Gateway • Authentication • Authorization • Request Validation │
+└──────────────────────────────┬──────────────────────────────────────┘
+                               ↓
+┌─────────────────────────────────────────────────────────────────────┐
+│  ORCHESTRATION / CONTROL PLANE                                      │
+│                                                                     │
+│  Supervisor / Router                                                │
+│       │                                                             │
+│       ├── Synchronous Agent Flow                                    │
+│       └── Asynchronous Agent Flow                                   │
+│                                                                     │
+│  Task Manager • Workflow • State • Retry • Human Approval           │
+└──────────────────────────────┬──────────────────────────────────────┘
+                               ↓
+┌─────────────────────────────────────────────────────────────────────┐
+│                         POLICY / GUARDRAILS                          │
+│                                                                     │
+│  Policy Engine                                                      │
+│  • What the agent is allowed to do                                  │
+│  • What data can be sent to the LLM                                 │
+│  • Which tools can be called                                        │
+│  • Which model can be used                                          │
+│  • Data classification / PII / secrets                              │
+│  • Input / output validation                                        │
+└──────────────────────────────┬──────────────────────────────────────┘
+                               ↓
+┌─────────────────────────────────────────────────────────────────────┐
+│                         AGENT LAYER                                 │
+│                                                                     │
+│  Supervisor Agent                                                   │
+│       ↓                                                             │
+│  ┌───────────┐ ┌───────────┐ ┌───────────┐ ┌────────────┐           │
+│  │ Research  │ │  Coding   │ │  Data     │ │ Automation │           │
+│  │   Agent   │ │   Agent   │ │  Agent    │ │   Agent    │           │
+│  └─────┬─────┘ └─────┬─────┘ └─────┬─────┘ └──────┬─────┘           │
+│        └──────────────┴─────────────┴───────────────┘               │
+└──────────────────────────────┬──────────────────────────────────────┘
+                               ↓
+┌─────────────────────────────────────────────────────────────────────┐
+│                         KNOWLEDGE / MEMORY                          │
+│                                                                     │
+│  Short-Term State • Long-Term Memory • RAG • Vector DB              │
+│  Documents • Enterprise Knowledge • Conversation Context           │
+└──────────────────────────────┬──────────────────────────────────────┘
+                               ↓
+┌─────────────────────────────────────────────────────────────────────┐
+│                         TOOL LAYER                                  │
+│                                                                     │
+│  APIs • Databases • Browser • Git • Files • Enterprise Systems      │
+│  MCP / Tool Servers                                                 │
+└──────────────────────────────┬──────────────────────────────────────┘
+                               ↓
+┌─────────────────────────────────────────────────────────────────────┐
+│                         MODEL LAYER                                 │
+│                                                                     │
+│  LLM Gateway / Model Router                                         │
+│  ├── Powerful model                                                 │
+│  ├── Fast/cheap model                                               │
+│  ├── Local model                                                    │
+│  └── Specialized model                                              │
+└─────────────────────────────────────────────────────────────────────┘
+
+       ───────────────── ENTERPRISE CROSS-CUTTING ─────────────────
+
+  Security • Secrets Management • IAM • Encryption
+  Observability • Logging • Tracing • Metrics
+  Audit • Cost Management • Rate Limiting
+  Evaluation • Quality • Compliance • Governance
+
 We're building a **mature enterprise multi-agent AI platform** — not a demo or a simple chatbot. The target architecture (below) is our master blueprint, and we build toward it progressively.
 
 - **Working folder:** `enterprise-multi-agent/`
