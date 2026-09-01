@@ -10,7 +10,7 @@
 
 
 
-# 🏢 Enterprise Multi-Agent Platform — Learning Notes
+# 🏢 Enterprise Multi-Agent Platform (Native AI) — Learning Notes
 
 ## 🎯 Project Overview
 
